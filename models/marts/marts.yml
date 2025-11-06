@@ -1,0 +1,43 @@
+version: 2
+
+models:
+  - name: qty_product
+    description: "Number of products in each order."
+    columns:
+      - name: order_id
+        description: "Unique identifier of the order. One row per order."
+      - name: qty_product
+        description: "Number of products in each order."
+
+  - name: orders_lines
+    description: "Aggregated combination of orders and sales information at the order level for KPI tracking. Each row represents one order, including total sales value, total quantity sold, and number of distinct products in the order."
+    columns:
+      - name: order_id
+        description: "Unique identifier of the order. One row per order."
+      - name: customer_id
+        description: "Unique identifier of the customer who placed the order."
+      - name: order_date
+        description: "Date when the order was placed."
+      - name: total_sales
+        description: "Total sales amount per order, calculated as the sum of product-level net sales."
+      - name: net_orders
+        description: "Net order value from the orders table (represents the full order revenue as recorded in the orders data)."
+      - name: total_products
+        description: "Total number of distinct products included in the order."
+      - name: quantity
+        description: "Total quantity of items sold in the order (sum across all products)."
+        
+  - name: orders_segments
+    description: "Customer segmentation for orders placed in 2023, based on customer order frequency over the past 12 months."
+    columns:
+      - name: customer_id
+        description: "Unique identifier of the customer who placed the order."
+      - name: order_id
+        description: "Unique identifier of the order."
+      - name: order_date
+        description: "Date when the order was placed."
+      - name: past_12m_orders
+        description: "Number of previous orders placed by the same customer in the 12 months preceding this order date."
+      - name: customer_segment
+        description: "Customer classification based on past 12-month order history. Possible values: 'New', 'Returning', or 'VIP'."
+

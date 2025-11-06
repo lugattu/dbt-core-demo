@@ -1,0 +1,62 @@
+version: 2
+
+sources:
+  - name: sales_orders
+    description: "Raw data source containing both sales and order information."
+    database: astrafy-interview
+    schema: sales_orders
+    tables:
+      - name: raw_sales
+        description: "Raw sales table with detailed transaction records for each product sold."
+      - name: raw_orders
+        description: "Raw orders table with high-level information about each customer order."
+
+models:
+  - name: sales
+    description: "Staging model for sales data. Cleans and renames columns from the raw sales source."
+    columns:
+      - name: sale_date
+        description: "Date of the sale (renamed from 'date_date')."
+        tests:
+          - not_null
+      - name: customer_id
+        description: "Unique identifier of the customer who placed the order."
+        tests:
+          - not_null
+      - name: order_id
+        description: "Unique identifier for the order associated with the sale."
+        tests:
+          - not_null
+      - name: product_id
+        description: "Unique identifier for the product sold (renamed from 'products_id')."
+        tests:
+          - not_null
+      - name: net_sales
+        description: "Net sales amount for the specific product in the order."
+        tests:
+          - not_null
+      - name: quantity
+        description: "Number of units sold (renamed from 'qty')."
+        tests:
+          - not_null
+
+  - name: orders
+    description: "Staging model for orders data. Cleans and renames columns from the raw orders source."
+    columns:
+      - name: order_date
+        description: "Date when the order was placed (renamed from 'date_date')."
+        tests:
+          - not_null
+      - name: customer_id
+        description: "Unique identifier of the customer who placed the order (renamed from 'customers_id')."
+        tests:
+          - not_null
+      - name: order_id
+        description: "Unique identifier for the order (renamed from 'orders_id')."
+        tests:
+          - not_null
+          - unique
+      - name: net_sales
+        description: "Total net sales amount for the order."
+        tests:
+          - not_null
